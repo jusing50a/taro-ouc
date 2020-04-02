@@ -1,12 +1,6 @@
 import Taro, { Component } from '@tarojs/taro';
-import Index from './pages/index';
-import './app.less';
-
-// 如果需要在 h5 环境中开启 React Devtools
-// 取消以下注释：
-// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
-//   require('nerv-devtools')
-// }
+import Index from './pages/home';
+import './app.scss';
 
 class App extends Component {
   componentDidMount() {}
@@ -18,12 +12,50 @@ class App extends Component {
   componentDidCatchError() {}
 
   config = {
-    pages: ['pages/index/index'],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#e6e9ef',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
+    },
+    pages: [
+      'pages/Home/index',
+      'pages/User/index',
+      'pages/Notification/index',
+      'pages/Notification/Detail/index',
+      'pages/Course/index',
+      'pages/Course/Detail/index',
+      'pages/Schedule/index',
+      'pages/Exam/index',
+      'pages/Exam/Detail/index',
+      'pages/Grade/index',
+      'pages/Grade/Detail/index',
+      'pages/TrainingProgram/index',
+    ],
+    subPackages: [
+      {
+        root: 'packages',
+        pages: ['Login/index'],
+      },
+    ],
+    tabBar: {
+      color: '#97aab2',
+      borderStyle: 'white',
+      selectedColor: '#3f5765',
+      list: [
+        {
+          text: 'Home',
+          pagePath: 'pages/Home/index',
+          iconPath: 'assets/images/icon-tab-alps-negative.png',
+          selectedIconPath: 'assets/images/icon-tab-alps-active.png',
+        },
+        {
+          text: 'User',
+          pagePath: 'pages/User/index',
+          iconPath: 'assets/images/icon-tab-user-negative.png',
+          selectedIconPath: 'assets/images/icon-tab-user-active.png',
+        },
+      ],
     },
   };
 
