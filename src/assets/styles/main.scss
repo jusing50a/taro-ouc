@@ -31,16 +31,6 @@ page {
   --ghostWhite: #f1f1f1;
   --white: #ffffff;
 
-  --theme: #f69c56;
-  --theme-dark: #f37b1d;
-  --theme-light: #f8b580;
-  --theme-lighter: #fac8a0;
-
-  --brand: #6f818c;
-  --brand-dark: #3f5765;
-  --brand-light: #93a1a9;
-  --brand-lighter: #bdd4de;
-
   /* 浅色 */
   --redLight: #fadbd9;
   --orangeLight: #fde6d2;
@@ -81,7 +71,7 @@ page {
   // background-color: var(--ghostWhite);
   background-color: #e6e9ef;
   font-size: 28rpx;
-  color: var(--black);
+  // color: var(--black);
   font-family: Helvetica Neue, Helvetica, sans-serif;
 }
 
@@ -3449,21 +3439,6 @@ scroll-view.cu-steps .cu-item {
   border-color: var(--white);
 }
 
-.bg-brand-light {
-  background-color: var(--brand-light);
-  color: var(--white);
-}
-
-.bg-brand {
-  background-color: var(--brand);
-  color: var(--white);
-}
-
-.bg-theme {
-  background-color: var(--theme);
-  color: var(--white);
-}
-
 .bg-red {
   background-color: var(--red);
   color: var(--white);
@@ -3895,54 +3870,6 @@ scroll-view.cu-steps .cu-item {
   color: var(--orange);
 }
 
-.text-theme,
-.line-theme,
-.lines-theme {
-  color: var(--theme) !important;
-}
-
-.text-theme-dark,
-.line-theme-dark,
-.lines-theme-dark {
-  color: var(--theme-dark) !important;
-}
-
-.text-theme-light,
-.line-theme-light,
-.lines-theme-light {
-  color: var(--theme-light) !important;
-}
-
-.text-theme-lighter,
-.line-theme-lighter,
-.lines-theme-lighter {
-  color: var(--theme-lighter) !important;
-}
-
-.text-brand-lighter,
-.line-brand-lighter,
-.lines-brand-lighter {
-  color: var(--brand-lighter) !important;
-}
-
-.text-brand-light,
-.line-brand-light,
-.lines-brand-light {
-  color: var(--brand-light) !important;
-}
-
-.text-brand,
-.line-brand,
-.lines-brand {
-  color: var(--brand) !important;
-}
-
-.text-brand-dark,
-.line-brand-dark,
-.lines-brand-dark {
-  color: var(--brand-dark) !important;
-}
-
 .text-yellow,
 .line-yellow,
 .lines-yellow {
@@ -4025,33 +3952,4 @@ scroll-view.cu-steps .cu-item {
 .line-white,
 .lines-white {
   color: var(--white);
-}
-
-.full-screen {
-  width: 100vw;
-  height: 100vh;
-}
-
-.translate-top {
-  transform: translateY(-15vh);
-}
-
-.shadow-card {
-  box-shadow: 0px 0px 16rpx 24rpx #ebedf0;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.overflow-auto {
-  overflow: auto;
-}
-
-.border-dashed-item {
-  border-bottom: 10rpx dashed val(--gray);
-}
-
-.mw-200 {
-  min-width: 200rpx;
 }

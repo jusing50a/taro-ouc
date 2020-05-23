@@ -2,7 +2,6 @@ export default {
   'color-theme': '#6f818c',
   'color-theme-dark': '#3f5765',
   'color-theme-light': '#93a1a9',
-  'color-theme-light': '#97aab2',
   'color-theme-lighter': '#bdd4de',
   'color-theme-lighterer': '#efefef',
 

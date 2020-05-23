@@ -54,6 +54,7 @@ export default function Index() {
               placeholder="搜索教务通知"
               confirmType="search"
               adjustPosition={false}
+              placeholderClass="text-basic-light"
               onInput={e => {
                 keywordsTemp = e.detail.value;
               }}
@@ -61,7 +62,7 @@ export default function Index() {
           </View>
           <View className="action">
             <Button
-              className="cu-btn bg-theme shadow-blur round"
+              className="cu-btn bg-brand shadow-blur round"
               onClick={onSearch}
             >
               搜索
@@ -86,22 +87,22 @@ export default function Index() {
                   onNotificationClick(item.id);
                 }}
               >
-                <View className="cu-avatar bg-brand-light">
+                <View className="cu-avatar bg-basic-light">
                   <Text>{index + 1}</Text>
                 </View>
                 <View className="content">
-                  <Text className="text-brand-light">{item.title}</Text>
+                  <Text className="text-basic">{item.title}</Text>
                 </View>
-                <View className="action text-brand-light text-xs margin-right-xs">
+                <View className="action text-basic-light text-xs margin-right-xs">
                   <Text>{item.date}</Text>
                 </View>
               </View>
             ))}
             {isNotificationsLoading && (
-              <View className="cu-load bg-white text-gray loading" />
+              <View className="cu-load bg-white text-brand-light loading" />
             )}
             {isNotificationsDone && (
-              <View className="cu-load bg-white text-gray over" />
+              <View className="cu-load bg-white text-brand-light over" />
             )}
           </View>
         )}

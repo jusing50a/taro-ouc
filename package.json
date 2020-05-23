@@ -9,6 +9,7 @@
     "css": "less"
   },
   "scripts": {
+    "start": "npm run dev:weapp",
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
@@ -46,6 +47,7 @@
     "wx-jsencrypt": "^3.0.0-rc.1.4"
   },
   "devDependencies": {
+    "@tarojs/cli": "2.0.1",
     "@tarojs/mini-runner": "2.0.1",
     "@tarojs/webpack-runner": "2.0.1",
     "@types/react": "^16.4.6",

@@ -10,70 +10,70 @@ export default function Index() {
   const data = detail ? JSON.parse(decodeURIComponent(detail)) : {};
 
   return (
-    <View class="margin radius bg-white overflow-hidden">
+    <View className="margin radius bg-white overflow-hidden">
       <View className="cu-list menu">
-        <View className="cu-item">
-          <View className="content mw-200">
-            <Text className="text-grey">课程名</Text>
-          </View>
-          <View className="action">
-            <Text className="text-grey">{data.course}</Text>
-          </View>
-        </View>
-        <View className="cu-item">
-          <View className="content mw-200">
-            <Text className="text-grey">修读性质</Text>
-          </View>
-          <View className="action">
-            <Text className="text-grey">{data.courseType}</Text>
+        <View className="cu-bar bg-white">
+          <View className="action border-title">
+            <Text className="text-brand text-bold text-xl text-cut margin-right-xxl">
+              {data.course}
+            </Text>
+            <Text class="bg-gradual-brand bg-radius">{data.course}</Text>
           </View>
         </View>
         <View className="cu-item">
           <View className="content mw-200">
-            <Text className="text-grey">总学时</Text>
+            <Text className="text-basic">修读性质</Text>
           </View>
           <View className="action">
-            <Text className="text-grey">{data.hours}</Text>
+            <Text className="text-basic-light">{data.courseType}</Text>
           </View>
         </View>
         <View className="cu-item">
           <View className="content mw-200">
-            <Text className="text-grey">学分</Text>
+            <Text className="text-basic">总学时</Text>
           </View>
           <View className="action">
-            <Text className="text-grey">{data.credit}</Text>
+            <Text className="text-basic-light">{data.hours}</Text>
           </View>
         </View>
         <View className="cu-item">
           <View className="content mw-200">
-            <Text className="text-grey">权重分</Text>
+            <Text className="text-basic">学分</Text>
           </View>
           <View className="action">
-            <Text className="text-grey">{data.weight}</Text>
+            <Text className="text-basic-light">{data.credit}</Text>
           </View>
         </View>
         <View className="cu-item">
           <View className="content mw-200">
-            <Text className="text-grey">选课状态</Text>
+            <Text className="text-basic">权重分</Text>
           </View>
           <View className="action">
-            <Text className="text-grey">{data.status}</Text>
+            <Text className="text-basic-light">{data.weight}</Text>
           </View>
         </View>
         <View className="cu-item">
           <View className="content mw-200">
-            <Text className="text-grey">选课时间</Text>
+            <Text className="text-basic">选课状态</Text>
           </View>
           <View className="action">
-            <Text className="text-grey">{data.createTime}</Text>
+            <Text className="text-basic-light">{data.status}</Text>
           </View>
         </View>
         <View className="cu-item">
           <View className="content mw-200">
-            <Text className="text-grey">提交人</Text>
+            <Text className="text-basic">选课时间</Text>
           </View>
           <View className="action">
-            <Text className="text-grey">{data.committer}</Text>
+            <Text className="text-basic-light">{data.createTime}</Text>
+          </View>
+        </View>
+        <View className="cu-item">
+          <View className="content mw-200">
+            <Text className="text-basic">提交人</Text>
+          </View>
+          <View className="action">
+            <Text className="text-basic-light">{data.committer}</Text>
           </View>
         </View>
       </View>

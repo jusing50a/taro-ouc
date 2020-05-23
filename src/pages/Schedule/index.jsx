@@ -7,26 +7,28 @@ import Taro, {
 import { View, Text, Picker, Swiper, SwiperItem } from '@tarojs/components';
 import { useFetch } from '../../utils/hooks';
 import { getSchedules } from '../../api/user';
+import store from '../../store';
+import { CURRENT_WEEK } from '../../config';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
 import Empty from '../../components/Empty';
-
-const weeks = Array.from({ length: 17 }, (_, index) => ({
-  id: index + 1,
-  title: `第 ${index + 1} 周`,
-}));
 
 export default function Index() {
   Index.config = {
     navigationBarTitleText: '课表信息',
   };
 
+  const weeks = Array.from({ length: 17 }, (_, index) => ({
+    id: `${index + 1}`,
+    title: `第 ${index + 1} 周`,
+  }));
+
   const intialSwiperItemIndex = ((day, hour) => {
-    if (day === 0) return 6;
-    if (hour < 20) return day - 1;
-    return day;
+    const dayIndex = hour < 21 ? day - 1 : day;
+    return dayIndex < 0 ? 6 : dayIndex;
   })(new Date().getDay(), new Date().getHours());
 
+  const currentWeek = store.state[CURRENT_WEEK];
   const query = createSelectorQuery();
   const [swiperHeight, setSwiperHeight] = useState(2000);
 
@@ -36,11 +38,11 @@ export default function Index() {
     isError: isSchedulesError,
     isLoading: isSchedulesLoading,
     setQuery: setSchedulesQuery,
-  } = useFetch({ week: 1 }, getSchedules);
+  } = useFetch({ week: currentWeek }, getSchedules);
 
   const week = useMemo(() => {
-    return weeks.find(item => item.id === schedulesQuery.week).title;
-  }, [schedulesQuery]);
+    return (weeks.find(item => item.id === schedulesQuery.week) || {}).title;
+  }, [schedulesQuery, weeks]);
 
   useLayoutEffect(() => {
     if (swiperHeight !== 2000) return;
@@ -66,14 +68,12 @@ export default function Index() {
         <View className="cu-form-group padding-lr">
           <Picker
             rangeKey="title"
-            className="margin-lr"
+            className="margin-lr picker-arrow-brand"
             range={weeks}
             value={weeks.findIndex(item => item.id === schedulesQuery.week)}
             onChange={onChange}
           >
-            <View className="picker" style="text-align: center">
-              {week}
-            </View>
+            <View className="picker text-basic-dark text-center">{week}</View>
           </Picker>
         </View>
       </View>
@@ -103,29 +103,47 @@ export default function Index() {
               <SwiperItem key={perDay.week}>
                 <View className="rect padding-bottom">
                   <View className="cu-timeline radius margin-lr shadow-card overflow-hidden">
-                    <View className="cu-time">{perDay.week}</View>
+                    <View className="cu-time text-basic">{perDay.week}</View>
                     {perDay.schedules.some(item => item.title) ? (
                       perDay.schedules.map(item => (
-                        <View className="cu-item text-cyan" key={item.id}>
+                        <View className="cu-item text-brand" key={item.id}>
                           <View className="content">
                             <View className="cu-capsule radius flex justify-between">
                               <View>
-                                <Text className="cu-tag bg-cyan">
-                                  {item.tag}
+                                <Text
+                                  className={[
+                                    'cu-tag',
+                                    item.title
+                                      ? 'bg-brand'
+                                      : 'bg-brand-lighter',
+                                  ]}
+                                >
+                                  {`${item.tag} ${item.id}`}
                                 </Text>
-                                <Text className="cu-tag line-cyan">
+                                <Text
+                                  className={[
+                                    'cu-tag',
+                                    item.title
+                                      ? 'line-brand'
+                                      : 'line-brand-lighter',
+                                  ]}
+                                >
                                   {item.duration}
                                 </Text>
                               </View>
-                              <View>
-                                <Text className="cu-tag line-cyan">
-                                  {item.classroom}
-                                </Text>
+                              {item.title && (
+                                <View>
+                                  <Text className="cu-tag j-tag line-brand">
+                                    {item.classroom}
+                                  </Text>
+                                </View>
+                              )}
+                            </View>
+                            {item.title && (
+                              <View className="margin-top text-basic-light">
+                                {item.title}
                               </View>
-                            </View>
-                            <View className="margin-top text-gray">
-                              {item.title}
-                            </View>
+                            )}
                           </View>
                         </View>
                       ))

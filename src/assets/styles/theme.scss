@@ -1,0 +1,151 @@
+page {
+  --white: #ffffff;
+
+  --basic: #6f818c;
+  --basic-dark: #3f5765;
+  --basic-light: #93a1a9;
+  --basic-lighter: #bdd4de;
+
+  --brand: #f69c56;
+  --brand-dark: #f37b1d;
+  --brand-light: #f8b580;
+  --brand-lighter: #fac8a0;
+
+  --brand-gradual-color: linear-gradient(45deg, #f37b1d, #f8b580);
+
+  color: var(--basic);
+}
+
+.text-brand,
+.line-brand,
+.lines-brand {
+  color: var(--brand) !important;
+}
+
+.text-brand-dark,
+.line-brand-dark,
+.lines-brand-dark {
+  color: var(--brand-dark) !important;
+}
+
+.text-brand-light,
+.line-brand-light,
+.lines-brand-light {
+  color: var(--brand-light) !important;
+}
+
+.text-brand-lighter,
+.line-brand-lighter,
+.lines-brand-lighter {
+  color: var(--brand-lighter) !important;
+}
+
+.text-basic-lighter,
+.line-basic-lighter,
+.lines-basic-lighter {
+  color: var(--basic-lighter) !important;
+}
+
+.text-basic-light,
+.line-basic-light,
+.lines-basic-light {
+  color: var(--basic-light) !important;
+}
+
+.text-basic,
+.line-basic,
+.lines-basic {
+  color: var(--basic) !important;
+}
+
+.text-basic-dark,
+.line-basic-dark,
+.lines-basic-dark {
+  color: var(--basic-dark) !important;
+}
+
+.bg-basic {
+  background-color: var(--basic) !important;
+  color: var(--white);
+}
+
+.bg-basic-light {
+  background-color: var(--basic-light) !important;
+  color: var(--white);
+}
+
+.bg-basic-lighter {
+  background-color: var(--basic-lighter) !important;
+  color: var(--white);
+}
+
+.bg-brand {
+  background-color: var(--brand) !important;
+  color: var(--white);
+}
+
+.bg-brand-light {
+  background-color: var(--brand-light) !important;
+  color: var(--white);
+}
+
+.bg-brand-lighter {
+  background-color: var(--brand-lighter) !important;
+  color: var(--white);
+}
+
+.bg-gradual-brand {
+  background-image: var(--brand-gradual-color) !important;
+  color: var(--white);
+}
+
+.border-basic-lighter {
+  border-color: var(--basic-lighter) !important;
+}
+
+.full-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.shadow-card {
+  box-shadow: 0px 0px 16rpx 24rpx #ebedf0;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.mw-200 {
+  min-width: 200rpx;
+}
+
+.bg-radius {
+  border-radius: 3rpx;
+  overflow: hidden;
+}
+
+.picker-arrow-brand {
+  &::after {
+    color: var(--brand) !important;
+  }
+}
+
+.margin-right-xxl {
+  margin-right: 60rpx;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.j-tag {
+  &::after {
+    border: 1rpx solid currentColor !important;
+    border-radius: 12rpx !important;
+  }
+}
+
+.position-relative {
+  position: relative;
+}

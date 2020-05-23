@@ -2,43 +2,28 @@ import Taro, { useMemo } from '@tarojs/taro';
 import { View, Text, Picker } from '@tarojs/components';
 import { useFetch } from '../../utils';
 import { getExams } from '../../api';
+import store from '../../store';
+import {
+  YEARS,
+  SEMESTERS,
+  PERIODS,
+  CURRENT_YEAR,
+  CURRENT_SEMESTER,
+  CURRENT_PERIOD,
+} from '../../config';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
 import Empty from '../../components/Empty';
-
-const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 6 }, (_, index) => ({
-  id: currentYear - index,
-  title: `${currentYear - index} - ${currentYear - index + 1} 学年`,
-}));
-const semesters = [
-  { id: 1, title: '秋季学期' },
-  { id: 2, title: '春季学期' },
-  { id: 3, title: '夏季学期' },
-];
-
-const periods = [
-  { id: 3, title: '期末考试' },
-  { id: 2, title: '期中考试' },
-];
 
 export default function Index() {
   Index.config = {
     navigationBarTitleText: '考试信息',
   };
 
-  const initializeDefaultQuery = () => {
-    const date = new Date();
-    const month = date.getMonth() + 1;
-    const year = month > 5 ? date.getFullYear() : date.getFullYear() - 1;
-    const semester = month > 8 || month < 3 ? 1 : month < 8 ? 2 : 3;
-    const period = 3;
-    return {
-      year,
-      semester,
-      period,
-    };
-  };
+  const currentYear = store.state[CURRENT_YEAR];
+  const currentSemester = store.state[CURRENT_SEMESTER];
+  const currentPeriod = store.state[CURRENT_PERIOD];
+  const [years, semesters, periods] = [YEARS, SEMESTERS, PERIODS];
 
   const {
     data: exams,
@@ -46,7 +31,10 @@ export default function Index() {
     isError: isExamsError,
     isLoading: isExamsLoading,
     setQuery: setExamsQuery,
-  } = useFetch(initializeDefaultQuery(), getExams);
+  } = useFetch(
+    { year: currentYear, semester: currentSemester, period: currentPeriod },
+    getExams
+  );
 
   const initialIndex = (() => {
     const { year, semester, period } = examsQuery;
@@ -58,11 +46,12 @@ export default function Index() {
 
   const queryString = useMemo(() => {
     const { year, semester, period } = examsQuery;
-    const yearTitle = years.find(item => item.id === year).title;
-    const semesterTitle = semesters.find(item => item.id === semester).title;
-    const periodTitle = periods.find(item => item.id === period).title;
-    return `${yearTitle} - ${semesterTitle} - ${periodTitle}`;
-  }, [examsQuery]);
+    const yearTitle = (years.find(item => item.id === year) || {}).title;
+    const semesterTitle = (semesters.find(item => item.id === semester) || {})
+      .title;
+    const periodTitle = (periods.find(item => item.id === period) || {}).title;
+    return `${yearTitle} / ${semesterTitle} / ${periodTitle}`;
+  }, [examsQuery, years, semesters, periods]);
 
   const onChange = e => {
     const [yearIndex, semesterIndex, periodIndex] = e.detail.value;
@@ -84,12 +73,12 @@ export default function Index() {
           <Picker
             rangeKey="title"
             mode="multiSelector"
-            className="margin-lr"
+            className="margin-lr picker-arrow-brand"
             value={initialIndex}
             range={[[...years], [...semesters], [...periods]]}
             onChange={onChange}
           >
-            <View className="picker" style="text-align: center">
+            <View className="picker text-basic-dark text-center">
               {queryString}
             </View>
           </Picker>
@@ -116,14 +105,14 @@ export default function Index() {
                   onExamClick(item);
                 }}
               >
-                <View className="cu-avatar">
+                <View className="cu-avatar bg-basic-light">
                   <Text>{index + 1}</Text>
                 </View>
                 <View className="content">
-                  <Text className="text-gray">{item.course}</Text>
+                  <Text className="text-basic">{item.course}</Text>
                 </View>
-                <View className="action text-gray text-xs margin-right-xs">
-                  <Text>{item.examType}</Text>
+                <View className="action text-basic-light text-xs margin-right-xs">
+                  <Text>{/-(.+) \d+/.exec(item.duration)[1]}</Text>
                 </View>
               </View>
             ))}

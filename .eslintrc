@@ -9,7 +9,8 @@
     ],
     "prettier/prettier": ["error"],
     "import/first": 0,
-    "import/prefer-default-export": 0
+    "import/prefer-default-export": 0,
+    "no-empty": 0
   },
   "parser": "babel-eslint"
 }

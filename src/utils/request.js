@@ -1,16 +1,18 @@
 import Taro from '@tarojs/taro';
-import { REQUEST_PREFIX } from '../config';
-import { getStorage } from './storage';
+import { REQUEST_PREFIX, TOKEN, TOKEN_EXPIRED } from '../config';
+import { getStorage, setStorage } from './storage';
 
 const beforeSend = async config => {
   const { url, method = 'get', params = {}, data = {} } = config;
   for (let key in params) {
     if (!params[key]) delete params[key];
   }
-  const token = getStorage('token');
-  if (token === 'outdated') {
-    Taro.navigateTo('/pages/User/Login/index');
-    throw new Error();
+  const token = getStorage(TOKEN);
+
+  if (token === TOKEN_EXPIRED) {
+    setStorage(TOKEN, undefined);
+    Taro.navigateTo({ url: '/packages/Login/index' });
+    return Promise.reject();
   }
   return {
     method,
@@ -23,18 +25,18 @@ const beforeSend = async config => {
   };
 };
 
-const afterSent = response => {
+const afterSent = async response => {
   const { data, statusCode } = response;
   if (statusCode >= 400) {
     if (statusCode === 401) {
-      Taro.removeStorageSync('token');
-      Taro.redirectTo({ url: '/packages/Login/index' });
-      return;
+      setStorage(TOKEN, undefined);
+      Taro.navigateTo({ url: '/packages/Login/index' });
+    } else {
+      Taro.showToast({
+        title: data.message,
+        icon: 'none',
+      });
     }
-    Taro.showToast({
-      title: data.message,
-      icon: 'none',
-    });
     return Promise.reject(data);
   } else {
     return data;

@@ -23,7 +23,10 @@ export default function Index() {
       ) : isLoading ? (
         <Loading />
       ) : (
-        <View className="overflow-auto padding padding-bottom-xl">
+        <View
+          className="padding padding-bottom-xl"
+          style={{ overflow: 'auto' }}
+        >
           <RichText
             selectable
             style="word-wrap: break-word; word-break: normal"

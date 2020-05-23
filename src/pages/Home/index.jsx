@@ -1,7 +1,9 @@
-import Taro, { useState } from '@tarojs/taro';
+import Taro, { useState, useDidShow } from '@tarojs/taro';
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components';
-import { useFetch, getStorage } from '../../utils';
 import { getSchoolNotifications } from '../../api';
+import { useFetch } from '../../utils';
+import { TOKEN } from '../../config';
+import store from '../../store';
 import theme from '../../assets/theme';
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
@@ -83,7 +85,7 @@ const navigatorItems = [
 
 export default function Index() {
   Index.config = {
-    navigationBarTitleText: '首页',
+    navigationBarTitleText: 'Hi OUC',
   };
 
   const [currentSwiperIndex, setCurrentSwiperIndex] = useState(0);
@@ -100,8 +102,14 @@ export default function Index() {
   };
 
   const onNavigatorItemClick = async path => {
-    const token = getStorage('token');
-    if (token) {
+    if (!path) {
+      Taro.showModal({
+        title: '提示',
+        confirmColor: theme['color-brand'],
+        cancelColor: theme['color-theme'],
+        content: '更多功能需要你来发掘，有好的想法？快联系开发者！',
+      });
+    } else if (store.state[TOKEN]) {
       Taro.navigateTo({ url: path });
     } else {
       const result = await Taro.showModal({
@@ -123,6 +131,10 @@ export default function Index() {
   const onMoreNotificationsClick = () => {
     Taro.navigateTo({ url: '/pages/Notification/index' });
   };
+
+  useDidShow(() => {
+    isNotificationsError && setNotificationQuery({ ...notificationsQury });
+  });
 
   return (
     <View>
@@ -158,7 +170,9 @@ export default function Index() {
               <Image src={item.icon} style="width: 120rpx; height: 120rpx;" />
             </View>
             <View>
-              <Text className="text-brand-dark">{item.title}</Text>
+              <Text className="text-basic-dark" style={{ color: item.color }}>
+                {item.title}
+              </Text>
             </View>
           </View>
         ))}
@@ -167,11 +181,11 @@ export default function Index() {
         <View onClick={onMoreNotificationsClick}>
           <View className="cu-bar bg-white solid-bottom">
             <View className="action">
-              <Text className="cuIcon-title text-theme" />
-              <Text className="text-brand-dark">教务通知</Text>
+              <Text className="cuIcon-title text-brand" />
+              <Text className="text-basic-dark">教务通知</Text>
             </View>
             <View className="action">
-              <Text className="cuIcon-right text-theme" />
+              <Text className="cuIcon-right text-brand" />
             </View>
           </View>
         </View>
@@ -193,13 +207,13 @@ export default function Index() {
                   onNotificationClick(item.id);
                 }}
               >
-                <View className="cu-avatar bg-brand-light">
+                <View className="cu-avatar bg-basic-light">
                   <Text>{index + 1}</Text>
                 </View>
                 <View className="content">
-                  <Text className="text-brand-light">{item.title}</Text>
+                  <Text className="text-basic">{item.title}</Text>
                 </View>
-                <View className="action text-brand-light text-xs margin-right-xs">
+                <View className="action text-basic-light text-xs margin-right-xs">
                   <Text>{item.date}</Text>
                 </View>
               </View>

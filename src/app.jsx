@@ -1,9 +1,12 @@
 import Taro, { Component } from '@tarojs/taro';
+import { initializing } from './utils';
 import Index from './pages/home';
 import './app.scss';
 
 class App extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    initializing();
+  }
 
   componentDidShow() {}
 
@@ -14,7 +17,8 @@ class App extends Component {
   config = {
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#e6e9ef',
+      navigationBarBackgroundColor: '#fff',
+      // navigationBarBackgroundColor: '#e6e9ef',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
     },

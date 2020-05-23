@@ -1,16 +1,37 @@
-.index-wrapper {
-  margin: 24px;
-  text-align: center;
-  .content {
-    .avatar {
-      width: 150px;
-      height: 150px;
-      border-radius: 75px;
-      margin: 0 auto;
-      overflow: hidden;
-    }
-    .nickname {
-      margin-top: 12px;
-    }
+.image {
+  width: 100%;
+}
+
+.info {
+  margin-top: 32px;
+  padding: 32px;
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 75px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.feedback {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-size: 30rpx;
+  text-align: left;
+  background: transparent;
+  &::after {
+    border: none;
   }
 }

@@ -1,19 +1,13 @@
-import Taro, { useState } from '@tarojs/taro';
-import JSEncrypt from 'wx-jsencrypt';
+import Taro, { useState, useEffect } from '@tarojs/taro';
 import { View, Text, Button, Input, Form, Image } from '@tarojs/components';
-import Wale from '../../assets/images/img-background-wale.jpg';
-import { setStorage } from '../../utils/storage';
-import { PUBLIC_KEY } from '../../config/index';
-import { login } from '../../api/user';
-import theme from '../../assets/theme';
+import Whale from '../../assets/images/img-background-whale.jpg';
+import store from '../../store';
 import './style.scss';
-
-const jsencrypt = new JSEncrypt();
-jsencrypt.setPublicKey(PUBLIC_KEY);
 
 export default function Index() {
   Index.config = {
     navigationStyle: 'custom',
+    disableScroll: true,
   };
 
   const [username, setUsername] = useState(undefined);
@@ -23,34 +17,40 @@ export default function Index() {
     screenHeight,
     screenWidth,
     statusBarHeight,
-    windowHeight,
   } = Taro.getSystemInfoSync();
 
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const { data: token } = await login({
-        username,
-        password,
-        encrypted: encodeURIComponent(jsencrypt.encrypt(password)),
-      });
-      setStorage('token', token);
-      setStorage('username', username);
-      setStorage('password', password);
+      await store.Login(username, password);
       Taro.switchTab({
         url: '/pages/Home/index',
       });
     } catch (e) {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 400);
     }
   };
 
+  useEffect(() => {
+    const tryLogin = async () => {
+      setLoading(true);
+      const needLogin = await store.LoginIfNeeded();
+      if (needLogin) {
+        Taro.navigateBack();
+      }
+      setLoading(false);
+    };
+    tryLogin();
+  }, []);
+
   return (
-    <View>
+    <View className="overflow-hidden">
       <View className="background-wrapper">
         <Image
           mode="aspectFill"
-          src={Wale}
+          src={Whale}
           style={{
             minHeight: `${screenHeight}px`,
             minWidth: `${screenWidth}px`,
@@ -60,10 +60,10 @@ export default function Index() {
       <View style={{ paddingTop: `${statusBarHeight}px` }}>
         <View className="title-wrapper">
           <View className="title">
-            <Text>Hello Ocean</Text>
+            <Text>Hi OUC</Text>
           </View>
           <View className="sub-title">
-            <Text>请使用信息门户账号登录</Text>
+            <Text>请使用 my.ouc.edu.cn 账号登录</Text>
           </View>
         </View>
         <View className="form-wrapper">
@@ -71,14 +71,11 @@ export default function Index() {
             <View className="form-item">
               <Input
                 type="number"
-                className="input"
-                placeholder="Username"
-                value={username}
-                style={{
-                  borderColor: theme['color-theme-lighter'],
-                  color: '#fff',
-                }}
+                placeholder="请输入学号"
+                className="input text-white border-basic-lighter"
                 placeholderClass="input-placeholder"
+                value={username}
+                disabled={loading}
                 onInput={e => {
                   setUsername(e.detail.value);
                 }}
@@ -87,23 +84,22 @@ export default function Index() {
             <View className="form-item">
               <Input
                 type="password"
-                className="input"
-                placeholder="Password"
-                value={password}
-                style={{
-                  borderColor: theme['color-theme-lighter'],
-                  color: '#fff',
-                }}
+                confirmType="go"
+                placeholder="请输入信息门户密码"
+                className="input text-white border-basic-lighter"
                 placeholderClass="input-placeholder"
+                value={password}
+                disabled={loading}
                 onInput={e => {
                   setPassword(e.detail.value);
                 }}
+                onConfirm={onSubmit}
               />
             </View>
             <View className="form-item">
               <Button
                 type="primary"
-                className="flex-sub margin-top"
+                className="flex-sub margin-top-xl text-white bg-brand"
                 loading={loading}
                 disabled={loading}
                 onClick={onSubmit}

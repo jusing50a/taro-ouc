@@ -1,3 +1,4 @@
 export { useFetch } from './hooks';
-export { getStorage, setStorage } from './storage';
+export * from './storage';
 export { instance as request } from './request';
+export { default as initializing } from './initialize';

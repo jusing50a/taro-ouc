@@ -40,3 +40,18 @@ export const getTrainingPrograms = () =>
   request({
     url: '/trainingPrograms',
   });
+
+export const getCurrentWeek = () =>
+  request({
+    url: '/currentWeek',
+  });
+
+export const getCurrentSemester = () =>
+  request({
+    url: '/currentSemester',
+  });
+
+export const getTokenStatus = () =>
+  request({
+    url: '/tokenStatus',
+  });

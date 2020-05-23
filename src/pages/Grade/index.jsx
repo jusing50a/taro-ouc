@@ -2,36 +2,20 @@ import Taro, { useMemo } from '@tarojs/taro';
 import { View, Text, Picker } from '@tarojs/components';
 import { useFetch } from '../../utils';
 import { getGrades } from '../../api';
+import store from '../../store';
+import { YEARS, SEMESTERS, CURRENT_YEAR, CURRENT_SEMESTER } from '../../config';
 import Error from '../../components/Error';
 import Loading from '../../components/Loading';
 import Empty from '../../components/Empty';
-
-const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 6 }, (_, index) => ({
-  id: currentYear - index,
-  title: `${currentYear - index} - ${currentYear - index + 1} 学年`,
-}));
-const semesters = [
-  { id: 1, title: '秋季学期' },
-  { id: 2, title: '春季学期' },
-  { id: 3, title: '夏季学期' },
-];
 
 export default function Index() {
   Index.config = {
     navigationBarTitleText: '成绩信息',
   };
 
-  const initializeDefaultQuery = () => {
-    const date = new Date();
-    const month = date.getMonth() + 1;
-    const year = month > 5 ? date.getFullYear() : date.getFullYear() - 1;
-    const semester = month > 8 || month < 3 ? 1 : month < 8 ? 2 : 3;
-    return {
-      year,
-      semester,
-    };
-  };
+  const currentYear = store.state[CURRENT_YEAR];
+  const currentSemester = store.state[CURRENT_SEMESTER];
+  const [years, semesters] = [YEARS, SEMESTERS];
 
   const {
     data: grades,
@@ -39,7 +23,7 @@ export default function Index() {
     isError: isGradesError,
     isLoading: isGradesLoading,
     setQuery: setGradesQuery,
-  } = useFetch(initializeDefaultQuery(), getGrades);
+  } = useFetch({ year: currentYear, semester: currentSemester }, getGrades);
 
   const initialIndex = (() => {
     const { year, semester } = gradesQuery;
@@ -50,21 +34,22 @@ export default function Index() {
 
   const queryString = useMemo(() => {
     const { year, semester } = gradesQuery;
-    const yearTitle = years.find(item => item.id === year).title;
-    const semesterTitle = semesters.find(item => item.id === semester).title;
+    const yearTitle = (years.find(item => item.id === year) || {}).title;
+    const semesterTitle = (semesters.find(item => item.id === semester) || {})
+      .title;
     return `${yearTitle} - ${semesterTitle}`;
-  }, [gradesQuery]);
-
-  const onCourseClick = item => {
-    const detail = encodeURIComponent(JSON.stringify(item));
-    Taro.navigateTo({ url: `/pages/Grade/Detail/index?detail=${detail}` });
-  };
+  }, [gradesQuery, years, semesters]);
 
   const onChange = e => {
     const [yearIndex, semesterIndex] = e.detail.value;
     const year = years[yearIndex].id;
     const semester = semesters[semesterIndex].id;
     setGradesQuery({ year, semester });
+  };
+
+  const onCourseClick = item => {
+    const detail = encodeURIComponent(JSON.stringify(item));
+    Taro.navigateTo({ url: `/pages/Grade/Detail/index?detail=${detail}` });
   };
 
   return (
@@ -74,12 +59,12 @@ export default function Index() {
           <Picker
             rangeKey="title"
             mode="multiSelector"
-            className="margin-lr"
+            className="margin-lr picker-arrow-brand"
             value={initialIndex}
             range={[[...years], [...semesters]]}
             onChange={onChange}
           >
-            <View className="picker" style="text-align: center">
+            <View className="picker text-basic-dark text-center">
               {queryString}
             </View>
           </Picker>
@@ -106,13 +91,13 @@ export default function Index() {
                   onCourseClick(item);
                 }}
               >
-                <View className="cu-avatar">
+                <View className="cu-avatar bg-basic-light">
                   <Text>{index + 1}</Text>
                 </View>
                 <View className="content">
-                  <Text className="text-gray">{item.course}</Text>
+                  <Text className="text-basic">{item.course}</Text>
                 </View>
-                <View className="action text-gray text-xs margin-right-xs">
+                <View className="action text-basic-light text-xs margin-right-xs">
                   <Text>{item.grade}</Text>
                 </View>
               </View>
